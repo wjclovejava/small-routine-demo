@@ -1,10 +1,11 @@
 package com.wjclovejava.demo.mini.api.controller;
 
 import com.wjclovejava.demo.common.utils.BasicResult;
+import com.wjclovejava.demo.common.utils.DozerUtils;
+import com.wjclovejava.demo.mini.api.controller.vo.UsersVO;
 import com.wjclovejava.demo.pojo.Users;
 import com.wjclovejava.demo.service.UserService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -83,6 +84,21 @@ public class UserController {
         user.setFaceImage(uploadPathDB);
         userService.updateUserInfo(user);
 
-        return BasicResult.ok();
+        return BasicResult.ok(uploadPathDB);
     }
+
+
+
+    @ApiOperation("查询用户信息")
+    @PostMapping("/query")
+    public BasicResult queryUser(String userId){
+        if(StringUtils.isBlank(userId)){
+            return BasicResult.errorMsg("用户id不能为空");
+        }
+        Users user = userService.queryUserInfo(userId);
+        UsersVO usersVO=DozerUtils.convert(user, UsersVO.class);
+        return BasicResult.ok(usersVO);
+    }
+
+
 }

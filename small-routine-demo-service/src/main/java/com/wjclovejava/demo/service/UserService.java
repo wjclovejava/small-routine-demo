@@ -33,4 +33,11 @@ public interface UserService {
      * @param user
      */
     void updateUserInfo( Users user);
+
+    /**
+     *
+     * @param userId
+     * @return
+     */
+    Users queryUserInfo(String userId);
 }

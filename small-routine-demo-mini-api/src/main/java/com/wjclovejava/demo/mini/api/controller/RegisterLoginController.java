@@ -19,7 +19,7 @@ import java.util.UUID;
  * @Description:
  * @Date: created in 2019/2/21 11:46
  */
-@Api("用户注册登录控制器")
+@Api(value = "注册登录控制器", tags = "注册登录业务的Controller")
 @RestController
 public class RegisterLoginController extends BasicController{
 

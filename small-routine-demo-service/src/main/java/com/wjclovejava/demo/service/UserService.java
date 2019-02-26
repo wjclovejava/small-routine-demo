@@ -1,6 +1,7 @@
 package com.wjclovejava.demo.service;
 
 import com.wjclovejava.demo.pojo.Users;
+import com.wjclovejava.demo.pojo.UsersReport;
 
 /**
  * @Author: wjc
@@ -40,4 +41,32 @@ public interface UserService {
      * @return
      */
     Users queryUserInfo(String userId);
+
+    /**
+     * 查询用户是否喜欢的点赞视频
+     * @param loginUserId
+     * @param videoId
+     * @return
+     */
+    boolean isUserLikeVideo(String loginUserId, String videoId);
+
+    /**
+     * @Description: 增加用户和粉丝的关系
+     */
+     void saveUserFanRelation(String userId, String fanId);
+
+    /**
+     * @Description: 删除用户和粉丝的关系
+     */
+     void deleteUserFanRelation(String userId, String fanId);
+
+    /**
+     * @Description: 查询用户是否关注
+     */
+     boolean queryIfFollow(String userId, String fanId);
+
+    /**
+     * @Description: 举报用户
+     */
+     void reportUser(UsersReport userReport);
 }

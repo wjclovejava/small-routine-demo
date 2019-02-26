@@ -1,14 +1,12 @@
-package com.wjclovejava.demo.pojo;
+package com.wjclovejava.demo.pojo.vo;
 
 import java.util.Date;
+import javax.persistence.*;
 
-public class Comments {
+import org.springframework.format.annotation.DateTimeFormat;
 
+public class CommentsVO {
     private String id;
-
-    private String fatherCommentId;
-
-    private String toUserId;
 
     /**
      * 视频id
@@ -26,8 +24,38 @@ public class Comments {
      * 评论内容
      */
     private String comment;
+    
+    private String faceImage;
+    private String nickname;
+    private String toNickname;
+    private String timeAgoStr;
+    
 
-    /**
+    public String getTimeAgoStr() {
+		return timeAgoStr;
+	}
+
+	public void setTimeAgoStr(String timeAgoStr) {
+		this.timeAgoStr = timeAgoStr;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getFaceImage() {
+		return faceImage;
+	}
+
+	public void setFaceImage(String faceImage) {
+		this.faceImage = faceImage;
+	}
+
+	/**
      * @return id
      */
     public String getId() {
@@ -39,34 +67,6 @@ public class Comments {
      */
     public void setId(String id) {
         this.id = id;
-    }
-
-    /**
-     * @return father_comment_id
-     */
-    public String getFatherCommentId() {
-        return fatherCommentId;
-    }
-
-    /**
-     * @param fatherCommentId
-     */
-    public void setFatherCommentId(String fatherCommentId) {
-        this.fatherCommentId = fatherCommentId;
-    }
-
-    /**
-     * @return to_user_id
-     */
-    public String getToUserId() {
-        return toUserId;
-    }
-
-    /**
-     * @param toUserId
-     */
-    public void setToUserId(String toUserId) {
-        this.toUserId = toUserId;
     }
 
     /**
@@ -99,10 +99,10 @@ public class Comments {
     /**
      * 设置留言者，评论的用户id
      *
-     * @param formUserId 留言者，评论的用户id
+     * @param fromUserId 留言者，评论的用户id
      */
-    public void setFormUserId(String formUserId) {
-        this.formUserId = formUserId;
+    public void setFormUserId(String fromUserId) {
+        this.formUserId = fromUserId;
     }
 
     /**
@@ -136,4 +136,12 @@ public class Comments {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+	public String getToNickname() {
+		return toNickname;
+	}
+
+	public void setToNickname(String toNickname) {
+		this.toNickname = toNickname;
+	}
 }

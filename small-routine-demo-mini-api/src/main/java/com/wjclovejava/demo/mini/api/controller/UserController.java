@@ -2,18 +2,17 @@ package com.wjclovejava.demo.mini.api.controller;
 
 import com.wjclovejava.demo.common.utils.BasicResult;
 import com.wjclovejava.demo.common.utils.DozerUtils;
-import com.wjclovejava.demo.mini.api.controller.vo.UsersVO;
 import com.wjclovejava.demo.pojo.Users;
+import com.wjclovejava.demo.pojo.UsersReport;
+import com.wjclovejava.demo.pojo.vo.PublisherVideoVO;
+import com.wjclovejava.demo.pojo.vo.UsersVO;
 import com.wjclovejava.demo.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -87,8 +86,6 @@ public class UserController {
         return BasicResult.ok(uploadPathDB);
     }
 
-
-
     @ApiOperation("查询用户信息")
     @PostMapping("/query")
     public BasicResult queryUser(String userId){
@@ -100,5 +97,59 @@ public class UserController {
         return BasicResult.ok(usersVO);
     }
 
+    @PostMapping("/queryPublisher")
+    public BasicResult queryPublisher(String loginUserId, String videoId,
+                                          String publishUserId) throws Exception {
+
+        if (StringUtils.isBlank(publishUserId)) {
+            return BasicResult.errorMsg("");
+        }
+
+        // 1. 查询视频发布者的信息
+        Users userInfo = userService.queryUserInfo(publishUserId);
+        UsersVO publisher =  DozerUtils.convert(userInfo, UsersVO.class);
+
+        // 2. 查询当前登录者和视频的点赞关系
+        boolean userLikeVideo = userService.isUserLikeVideo(loginUserId, videoId);
+
+        PublisherVideoVO bean = new PublisherVideoVO();
+        bean.setPublisher(publisher);
+        bean.setUserLikeVideo(userLikeVideo);
+
+        return BasicResult.ok(bean);
+    }
+
+    @PostMapping("/beyourfans")
+    public BasicResult beyourfans(String userId, String fanId) throws Exception {
+
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(fanId)) {
+            return BasicResult.errorMsg("");
+        }
+
+        userService.saveUserFanRelation(userId, fanId);
+
+        return BasicResult.ok("关注成功...");
+    }
+
+    @PostMapping("/dontbeyourfans")
+    public BasicResult dontbeyourfans(String userId, String fanId) throws Exception {
+
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(fanId)) {
+            return BasicResult.errorMsg("");
+        }
+
+        userService.deleteUserFanRelation(userId, fanId);
+
+        return BasicResult.ok("取消关注成功...");
+    }
+
+    @PostMapping("/reportUser")
+    public BasicResult reportUser(@RequestBody UsersReport usersReport) throws Exception {
+
+        // 保存举报信息
+        userService.reportUser(usersReport);
+
+        return BasicResult.errorMsg("举报成功...有你平台变得更美好...");
+    }
 
 }

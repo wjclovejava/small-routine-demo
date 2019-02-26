@@ -6,4 +6,7 @@
     <result column="content" jdbcType="VARCHAR" property="content" />
   </resultMap>
 
+  <select id="getHotWords" resultType="java.lang.String">
+    select content from search_records GROUP BY content ORDER BY COUNT(content) desc
+  </select>
 </mapper>
